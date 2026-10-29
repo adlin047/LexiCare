@@ -9,7 +9,6 @@ from lexicare_core import (
 
 app = Flask(__name__)
 
-# Set this as an environment variable, never inside the code.
 PIXABAY_API_KEY = os.environ.get("PIXABAY_API_KEY", "")
 image_cache = {}
 

@@ -1,18 +1,12 @@
 import os
-
 import requests
 from flask import Flask, Response, jsonify, render_template, request
-
 from lexicare_core import (
     corrections, save_corrections, syllabify, tokenize, write_report,
 )
-
 app = Flask(__name__)
-
 PIXABAY_API_KEY = os.environ.get("PIXABAY_API_KEY", "")
 image_cache = {}
-
-
 def get_image(word):
     if word in image_cache:
         return image_cache[word]
@@ -41,11 +35,9 @@ def get_image(word):
     except (requests.RequestException, ValueError):
         return None
 
-
 @app.get("/")
 def home():
     return render_template("index.html")
-
 
 @app.post("/api/syllabify")
 def api_syllabify():
@@ -57,7 +49,6 @@ def api_syllabify():
                       "confident": confident, "source": source})
     return jsonify(words=words)
 
-
 @app.get("/api/image")
 def api_image():
     result = get_image(request.args.get("q", "").strip().lower()[:40])
@@ -65,7 +56,6 @@ def api_image():
         return "", 404
     data, mimetype = result
     return Response(data, mimetype=mimetype)
-
 
 @app.post("/api/correct")
 def api_correct():
@@ -82,7 +72,6 @@ def api_correct():
         return jsonify(ok=False, error="The server could not save this."), 500
     return jsonify(ok=True)
 
-
 @app.delete("/api/correct")
 def api_remove():
     word = str((request.get_json(silent=True) or {}).get("word", ""))
@@ -95,7 +84,6 @@ def api_remove():
     parts, confident, source = syllabify(word)
     return jsonify(ok=True, parts=parts, confident=confident, source=source)
 
-
 @app.post("/api/report")
 def api_report():
     d = request.get_json(silent=True) or {}
@@ -106,7 +94,6 @@ def api_report():
     ok = write_report(word, [str(p) for p in d.get("shown", [])],
                       suggested, str(d.get("reason", ""))[:300])
     return jsonify(ok=ok)
-
 
 if __name__ == "__main__":
     app.run(debug=True)

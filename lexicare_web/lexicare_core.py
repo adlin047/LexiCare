@@ -1,4 +1,3 @@
-"""LexiCare core: your original syllable logic, minus Tkinter, pyttsx3 and PIL."""
 import csv
 import json
 import re
@@ -86,12 +85,9 @@ def write_report(word, shown_parts, suggested_parts, reason):
 
 
 def fallback_split(word):
-    """Use Pyphen as a fallback when pronunciation data is unavailable."""
     return dictionary.inserted(word).split("-")
 
-
 def count_cmu_syllables(word):
-    """Return a likely syllable count from CMUdict, or None."""
     pronunciations = pronunciation_dictionary.get(word.lower())
 
     if not pronunciations:
@@ -123,12 +119,6 @@ def count_cmu_syllables(word):
 
 
 def heuristic_boundaries(word):
-    """
-    Generate candidate written boundaries.
-
-    This is a heuristic, not a complete English phonics system.
-    Pyphen candidates receive higher priority.
-    """
     lower = word.lower()
     vowel_groups = []
     i = 0
@@ -341,9 +331,7 @@ def automatic_split(word):
 
 
 def syllabify(word):
-    """Use a user's saved correction before automatic syllabification."""
     saved = corrections.get(word.lower())
-
     if saved:
         parts = []
         offset = 0

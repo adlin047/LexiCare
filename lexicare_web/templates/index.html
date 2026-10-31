@@ -96,7 +96,6 @@ async function api(url, method = "GET", body) {
 }
 const note = t => $("status").textContent = t;
 
-/* Voice: the browser's built-in speech replaces pyttsx3 */
 function loadVoices() {
   voices = speechSynthesis.getVoices().filter(v => v.lang.startsWith("en"));
   $("voice").replaceChildren(...(voices.length ? voices.map(v => new Option(v.name)) : [new Option("Default voice")]));
@@ -112,7 +111,7 @@ function speak(text) {
   u.rate = +$("rate").value;
   speechSynthesis.speak(u);
 }
-
+/*Hello there! Nice to see someone taking interest on my work*/
 function render() {
   const box = $("reading");
   box.replaceChildren();
@@ -208,7 +207,7 @@ async function report() {
   const d = await api("/api/report", "POST", {word: w.word, shown: w.parts, suggested, reason: $("reason").value});
   note(d.ok ? "Report saved. Thank you." : "Could not save the report.");
 }
-
+/*Hi... Quick question, looking at the core code is one thing but why the UI?*/
 $("text").addEventListener("keydown", e => { if (e.key === "Enter") run(); });
 </script>
 </body>
